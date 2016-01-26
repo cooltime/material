@@ -1,8 +1,0 @@
-INFO:root:info message
-WARNING:root:warning message
-ERROR:root:error message
-CRITICAL:root:critical message
-[INFO] [2016-01-21 19:00:55,449] [PID:6864]         [FUNCNAME:<module>] [LINENO:10] - info message
-[WARNING] [2016-01-21 19:00:55,450] [PID:6864]         [FUNCNAME:<module>] [LINENO:11] - warning message
-[ERROR] [2016-01-21 19:00:55,450] [PID:6864]         [FUNCNAME:<module>] [LINENO:12] - error message
-[CRITICAL] [2016-01-21 19:00:55,450] [PID:6864]         [FUNCNAME:<module>] [LINENO:13] - critical message
