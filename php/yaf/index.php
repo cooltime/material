@@ -1,10 +1,9 @@
 <?php
 
-define('APPLICATION_PATH', dirname(__FILE__));
-require __DIR__.'/vendor/autoload.php';
-require __DIR__.'/conf/database.php';
+    define('APPLICATION_PATH', dirname(__FILE__));
 
-$application = new Yaf_Application( APPLICATION_PATH . "/conf/application.ini");
+    require APPLICATION_PATH . '/vendor/autoload.php';
 
-$application->bootstrap()->run();
+	$application = new \Yaf\Application(APPLICATION_PATH . '/config/application.ini');
+	$application->bootstrap()->run();
 ?>

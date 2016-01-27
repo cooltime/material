@@ -5,12 +5,12 @@
  * @desc 默认控制器
  * @see http://www.php.net/manual/en/class.yaf-controller-abstract.php
  */
-class IndexController extends PageService_Base {
+class IndexController extends Cooltime\Page\Base {
 
 	public function indexAction() {
 
 		$arrInput = $this->getRequest()->getQuery();
-        $arrOuput = array();
+        $arrOutput = $arrInput;
 
         return self::_render('index/index.html', $arrOutput);
 	}
@@ -18,10 +18,12 @@ class IndexController extends PageService_Base {
     public function getAction() {
 		$arrInput = $this->getRequest()->getQuery();
         $arrOuput = array();
+        $arrOutput = Sample::all();
 
         return self::_returnJson(array(
             'errno' => 0,
             'data' => $arrOutput,
         ));
     }
+
 }
