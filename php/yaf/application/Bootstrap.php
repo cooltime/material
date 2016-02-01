@@ -62,4 +62,10 @@ class Bootstrap extends Yaf\Bootstrap_Abstract
         Yaf\Registry::set('db', $db->getConnection());
     }
 
+    protected function _initLogger(Yaf\Dispatcher $dispatcher) {
+        $logConfig = Yaf\Application::app()->getConfig->logger->toArray();
+
+
+    }
+
 }
