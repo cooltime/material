@@ -18,8 +18,8 @@ from datetime import datetime
 import matplotlib.dates as mdates
 import commands
 
-URL = 'http://dashboard.falcon.dev.changbaops.com/chart/a?cf=AVERAGE&sum=off&id=8379'
-COOKIES = dict(Authentication='e02074ca9be74d40d5ca08bcb042588e')
+URL = '1'
+COOKIES = dict(Authentication='1')
 FIGURE_NUM_COL = 2
 FILENAME_PREFIX = 'flow_'
 INDEX_POSTFIX = 'flow_yyyymmddhhii.png'
