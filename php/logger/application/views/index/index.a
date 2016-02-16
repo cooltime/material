@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Start Page</title>
+    </head>
+    <body>
+        <input type="hidden" id="pageData" />
+        {{ startTime }}
+    </body>
+</html>
