@@ -1,0 +1,15 @@
+[LOG]
+entityNum = 2
+log1 = /tmp/ZuitaoAPI.fatal.log
+key1 = zuitaoapi_fatal
+name1 = zuitaoapi_fatal
+type1 = GAUGE
+pattern1 = .*
+filter1 =
+
+log2 = /tmp/ktv_db_log.log
+key2 = ktv_db_log
+name2 = ktv_db_log
+type2 = GAUGE
+pattern2 = .*
+filter2 = 

@@ -1,0 +1,4 @@
+[PROC]
+entityNum = 2
+program1 = /usr/sbin/nginx
+program2 = /usr/sbin/php5-fpm

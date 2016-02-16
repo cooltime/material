@@ -1,0 +1,78 @@
+input {
+    file {
+        path => "/tmp/ZuitaoAPI.fatal.log"
+    	sincedb_path => "/home/opdir/logs/sincedb.zuitaoapi_fatal"
+    	add_field => {
+    	    "app" => "zuitaoapi_fatal"
+    	}
+    }
+    file {
+        path => "/tmp/ktv_db_injection_log.log"
+    	sincedb_path => "/home/opdir/logs/sincedb.ktv_db_injection"
+    	add_field => {
+    	    "app" => "ktv_db_injection"
+    	}
+    }
+    file {
+        path => "/tmp/lazyapiworker.log"
+    	sincedb_path => "/home/opdir/logs/sincedb.lazyapiworker"
+    	add_field => {
+    	    "app" => "lazyapiworker"
+    	}
+    }
+    file {
+        path => "/tmp/ktv_db_log.log"
+    	sincedb_path => "/home/opdir/logs/sincedb.ktv_db_log"
+    	add_field => {
+    	    "app" => "ktv_db_log"
+    	}
+    }
+    file {
+        path => "/var/log/nginx/error.log"
+    	sincedb_path => "/home/opdir/logs/sincedb.nginx_error"
+    	add_field => {
+    	    "app" => "nginx_error"
+    	}
+    }
+    file {
+        path => "/home/log/hijackreport.log"
+        sincedb_path => "/home/opdir/logs/sincedb.hijackreport"
+	    codec => multiline {
+	        pattern => "^\s|\}"
+	        what => "previous"
+	    }
+        add_field => {
+            "app" => "hijackreport_log"
+        }
+    }
+}
+filter {
+    grok {
+        match => { 
+            "message" => "%{TIMESTAMP_ISO8601:timestamp}%{SPACE}%{NUMBER:userid}%{SPACE}%{BASE16FLOAT:main_version}.%{INT:minor_version}%{SPACE}%{WORD:device}%{SPACE}%{IP:client_ip}%{SPACE}\[%{GREEDYDATA:info1}\]\[%{GREEDYDATA:info2}\]%{SPACE}%{IP:server_ip}%{SPACE}%{URI:url}" 
+        }
+    }
+    grok {
+        match => {url => "%{URIPROTO:proto}://%{HOSTNAME:cdn_host}"}
+        remove_field => proto
+    }
+    geoip {
+        source => client_ip
+    }
+}
+output {
+#    file {
+#	path => "/home/opdir/logs/nginx"
+#    }
+#    tcp {
+#	codec => "json_lines"
+#	host => "1.1.1.1"
+#	mode => "client"
+#	port => "1111"
+#    }
+    elasticsearch {
+    	hosts => ["1.1.1.1:1111"]
+        user => "1111"
+        password => "1111"
+    }
+}

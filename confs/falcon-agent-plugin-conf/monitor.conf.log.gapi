@@ -1,0 +1,71 @@
+[LOG]
+entityNum = 10
+log1 = /var/log/nginx/gapi.changba.com_error_log
+key1 = nginx_gapi_error
+name1 = errorcount
+type1 = GAUGE
+pattern1 = .*
+filter1 = access forbidden by rule
+
+log2 = /var/log/nginx/gapi.changba.com_access_log
+key2 = nginx_gapi_access
+type2 = AVG
+name2 = pv
+pattern2 = \" 200
+filter2 = 
+
+log3 = /var/log/nginx/gapi.changba.com_access_log
+key3 = nginx_gapi_access
+name3 = 5xx
+type3 = GAUGE
+pattern3 = \" 5[0-9][0-9]
+filter3 = 
+
+log4 = /var/log/nginx/gapi.changba.com_access_log
+key4 = nginx_gapi_access
+name4 = 499
+type4 = GAUGE
+pattern4 = \" 499 
+filter4 = 
+
+log5 = /var/log/nginx/gapi.changba.com_access_log
+key5 = nginx_gapi_access
+name5 = 4xx
+type5 = GAUGE
+pattern5 = \" 4[0-9][0-9] 
+filter5 = \" 499
+
+log6 = /var/log/nginx/papi.changba.com_error_log
+key6 = nginx_papi_error
+name6 = errorcount
+type6 = GAUGE
+pattern6 = .*
+filter6 = access forbidden by rule
+
+log7 = /var/log/nginx/papi.changba.com_access_log
+key7 = nginx_papi_access
+type7 = AVG
+name7 = pv
+pattern7 = \" 200
+filter7 = 
+
+log8 = /var/log/nginx/papi.changba.com_access_log
+key8 = nginx_papi_access
+name8 = 5xx
+type8 = GAUGE
+pattern8 = \" 5[0-9][0-9]
+filter8 = 
+
+log9 = /var/log/nginx/papi.changba.com_access_log
+key9 = nginx_papi_access
+name9 = 499
+type9 = GAUGE
+pattern9 = \" 499 
+filter9 = 
+
+log10 = /var/log/nginx/papi.changba.com_access_log
+key10 = nginx_papi_access
+name10 = 4xx
+type10 = GAUGE
+pattern10 = \" 4[0-9][0-9] 
+filter10 = \" 499

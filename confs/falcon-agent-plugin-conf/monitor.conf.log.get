@@ -1,0 +1,92 @@
+[LOG]
+entityNum = 13
+log1 = /var/log/nginx/error.log
+key1 = nginx_error
+name1 = errorcount
+type1 = GAUGE
+pattern1 = .*
+filter1 = /cache/photo/[0-9]{1,3}/.*\.jpg | access forbidden by rule
+
+log2 = /var/log/nginx/access.log
+key2 = nginx_access
+type2 = AVG
+name2 = pv
+pattern2 = \" 200
+filter2 = 
+
+log3 = /var/log/nginx/access.log
+key3 = nginx_access
+name3 = 5xx
+type3 = GAUGE
+pattern3 = \" 5[0-9][0-9]
+filter3 = 
+
+log4 = /var/log/nginx/access.log
+key4 = nginx_access
+name4 = 499
+type4 = GAUGE
+pattern4 = \" 499 
+filter4 = 
+
+log5 = /var/log/nginx/access.log
+key5 = nginx_access
+name5 = 4xx
+type5 = GAUGE
+pattern5 = \" 4[0-9][0-9] 
+filter5 = \" 499
+
+log6 = /var/log/nginx/changba_post_log
+key6 = nginx_changba_post
+type6 = GAUGE
+name6 = pv_60
+pattern6 = \" 200
+filter6 = 
+
+log7 = /var/log/nginx/changba_post_log
+key7 = nginx_changba_post
+name7 = 5xx
+type7 = GAUGE
+pattern7 = \" 5[0-9][0-9]
+filter7 = 
+
+log8 = /var/log/nginx/changba_post_log
+key8 = nginx_changba_post
+name8 = 499
+type8 = GAUGE
+pattern8 = \" 499 
+filter8 = 
+
+log9 = /var/log/nginx/changba_post_log
+key9 = nginx_changba_post
+name9 = 4xx
+type9 = GAUGE
+pattern9 = \" 4[0-9][0-9] 
+filter9 = \" 499
+
+log10 = /tmp/ZuitaoAPI.fatal.log
+key10 = zuitaoapi_fatal
+name10 = zuitaoapi_fatal
+type10 = GAUGE
+pattern10 = .*
+filter10 =
+
+log11 = /tmp/ktv_db_injection_log.log
+key11 = ktv_db_injection
+name11 = ktv_db_injection
+type11 = GAUGE
+pattern11 = .*
+filter11 =
+
+log12 = /tmp/lazyapiworker.log
+key12 = lazyapiworker
+name12 = lazyapiworker
+type12 = GAUGE
+pattern12 = .*
+filter12 = "SUICIDE"
+
+log13 = /tmp/ktv_db_log.log
+key13 = ktv_db_log_error_sql
+name13 = ktv_db_log
+type13 = GAUGE
+pattern13 = Error SQL
+filter13 = 

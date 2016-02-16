@@ -1,0 +1,29 @@
+[LOG]
+entityNum = 4
+log1 = /var/log/nginx/error.log
+key1 = nginx_error
+name1 = errorcount
+type1 = GAUGE
+pattern1 = .*
+filter1 = 
+
+log2 = /var/log/nginx/changba_access_log
+key2 = nginx_changba_access
+type2 = AVG
+name2 = pv
+pattern2 = \" 200
+filter2 = 
+
+log3 = /var/log/nginx/changba_access_log
+key3 = nginx_changba_access
+name3 = 5xx
+type3 = GAUGE
+pattern3 = \" 5[0-9][0-9]
+filter3 = 
+
+log4 = /var/log/nginx/changba_access_log
+key4 = nginx_changba_access
+name4 = 4xx
+type4 = GAUGE
+pattern4 = \" 4[0-9][0-9] 
+filter4 = 

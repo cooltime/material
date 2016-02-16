@@ -1,0 +1,36 @@
+[LOG]
+entityNum = 5
+log1 = /var/log/nginx/api_changbashow_error.log
+key1 = nginx_changbashow_error
+name1 = errorcount
+type1 = GAUGE
+pattern1 = .*
+filter1 = access forbidden by rule
+
+log2 = /var/log/nginx/api_changbashow_access.log
+key2 = nginx_changbashow_access
+type2 = AVG
+name2 = pv
+pattern2 = \" 200
+filter2 = 
+
+log3 = /var/log/nginx/api_changbashow_access.log
+key3 = nginx_changbashow_access
+name3 = 5xx
+type3 = GAUGE
+pattern3 = \" 5[0-9][0-9]
+filter3 = 
+
+log4 = /var/log/nginx/api_changbashow_access.log
+key4 = nginx_changbashow_access
+name4 = 499
+type4 = GAUGE
+pattern4 = \" 499 
+filter4 = 
+
+log5 = /var/log/nginx/api_changbashow_access.log
+key5 = nginx_changbashow_access
+name5 = 4xx
+type5 = GAUGE
+pattern5 = \" 4[0-9][0-9] 
+filter5 = \" 499

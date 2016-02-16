@@ -1,0 +1,120 @@
+input {
+    file {
+        path => "/tmp/ZuitaoAPI.fatal.log"
+    	sincedb_path => "/home/opdir/logs/sincedb.zuitaoapi_fatal"
+    	add_field => {
+    	    "app" => "zuitaoapi_fatal"
+    	}
+    }
+    file {
+        path => "/tmp/ktv_db_log.log"
+    	sincedb_path => "/home/opdir/logs/sincedb.ktv_db_log"
+    	add_field => {
+    	    "app" => "ktv_db_log"
+    	}
+        codec => multiline {
+            pattern => "^\s"
+            what => "previous"
+        }
+    }
+    file {
+        path => "/var/log/nginx/web_error.log"
+    	sincedb_path => "/home/opdir/logs/sincedb.nginx_web_error"
+    	add_field => {
+    	    "app" => "nginx_web_error"
+    	}
+        codec => multiline {
+            pattern => "^\d"
+            negate => true
+            what => "previous"
+        }
+    }
+    file {
+        path => "/var/log/nginx/ktvs_error.log"
+    	sincedb_path => "/home/opdir/logs/sincedb.nginx_ktvs_error"
+    	add_field => {
+    	    "app" => "nginx_ktvs_error"
+    	}
+        codec => multiline {
+            pattern => "^\d"
+            negate => true
+            what => "previous"
+        }
+    }
+    file {
+        path => "/var/log/nginx/wx_error.log"
+    	sincedb_path => "/home/opdir/logs/sincedb.nginx_wx_error"
+    	add_field => {
+    	    "app" => "nginx_wx_error"
+    	}
+        codec => multiline {
+            pattern => "^\d"
+            negate => true
+            what => "previous"
+        }
+    }
+    file {
+        path => "/var/log/nginx/ktv.changba.com_ssl_error_log"
+    	sincedb_path => "/home/opdir/logs/sincedb.ktv.changba.com_ssl_error"
+    	add_field => {
+    	    "app" => "ktv.changba.com_ssl_error"
+    	}
+        codec => multiline {
+            pattern => "^\d"
+            negate => true
+            what => "previous"
+        }
+    }
+    file {
+        path => "/var/log/nginx/papimysong.changba.com_ssl_error_log"
+    	sincedb_path => "/home/opdir/logs/sincedb.papimysong.changba.com_ssl_error"
+    	add_field => {
+    	    "app" => "papimysong.changba.com_ssl_error"
+    	}
+        codec => multiline {
+            pattern => "^\d"
+            negate => true
+            what => "previous"
+        }
+    }
+    file {
+        path => "/var/log/nginx/papimysong.changba.com_error.log"
+    	sincedb_path => "/home/opdir/logs/sincedb.papimysong.changba.com_error"
+    	add_field => {
+    	    "app" => "papimysong.changba.com_error"
+    	}
+        codec => multiline {
+            pattern => "^\d"
+            negate => true
+            what => "previous"
+        }
+    }
+    file {
+        path => "/tmp/err.log"
+    	sincedb_path => "/home/opdir/logs/sincedb.tmp.err"
+    	add_field => {
+    	    "app" => "tmp_err"
+    	}
+        codec => multiline {
+            pattern => "^\d"
+            negate => true
+            what => "previous"
+        }
+    }
+}
+output {
+#    file {
+#	path => "/home/opdir/logs/nginx"
+#    }
+#    tcp {
+#	codec => "json_lines"
+#	host => "1.1.1.1"
+#	mode => "client"
+#	port => "1111"
+#    }
+    elasticsearch {
+    	hosts => ["1.1.1.1:1111"]
+        user => "1111"
+        password => "1111"
+    }
+}

@@ -1,0 +1,6 @@
+[NGINXRT]
+entityNum = 1
+type1 = GAUGE
+key1 = nginx_changba_access
+log1 = /var/log/nginx/changba_access_log
+

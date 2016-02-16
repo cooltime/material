@@ -1,0 +1,28 @@
+input {
+    file {
+        path => "/home/ios_report_file/report_data"
+#   	codec => "json"
+    	sincedb_path => "/home/opdir/logs/sincedb.ios_report_data"
+    	add_field => {
+    	    "app" => "ios_report_data"
+    	}
+    }
+}
+filter {
+    if [app] == 'ios_report_data' {
+        drop {
+            percentage => 60
+        }
+        geoip {
+            source => "%{[events][data][clientip]}"
+        }
+    }
+}
+
+output {
+    elasticsearch {
+	    hosts => ["1.1.1.1:1111"]
+	    user => "1111"
+	    password => "1111"
+    }
+}
