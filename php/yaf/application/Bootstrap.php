@@ -63,7 +63,7 @@ class Bootstrap extends Yaf\Bootstrap_Abstract
     }
 
     protected function _initLogger(Yaf\Dispatcher $dispatcher) {
-        $logConfig = Yaf\Application::app()->getConfig->logger->toArray();
+        $logConfig = Yaf\Application::app()->getConfig()->logger->toArray();
 
 
     }

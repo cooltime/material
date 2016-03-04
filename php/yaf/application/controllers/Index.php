@@ -18,7 +18,7 @@ class IndexController extends Cooltime\Page\Base {
     public function getAction() {
 		$arrInput = $this->getRequest()->getQuery();
         $arrOuput = array();
-        $arrOutput = Sample::all();
+        $arrOutput = SampleModel::all();
 
         return self::_returnJson(array(
             'errno' => 0,

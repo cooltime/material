@@ -1,0 +1,2 @@
+a.vmb: call delete('/root/.vim/doc/supertab.txt')|call delete('/root/.vim/plugin/supertab.vim')
+manpageview.vba: call delete('/root/.vim/plugin/manpageviewPlugin.vim')|call delete('/root/.vim/autoload/manpageview.vim')|call delete('/root/.vim/syntax/man.vim')|call delete('/root/.vim/syntax/mangl.vim')|call delete('/root/.vim/syntax/mankey.vim')|call delete('/root/.vim/syntax/info.vim')|call delete('/root/.vim/syntax/manphp.vim')|call delete('/root/.vim/doc/manpageview.txt')|call delete('/root/.vim/plugin/cecutil.vim')
