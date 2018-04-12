@@ -1,321 +1,358 @@
-map <F9> :call SaveInputData()<CR>
-func! SaveInputData()
-	exec "tabnew"
-	exec 'normal "+gP'
-	exec "w! /tmp/input_data"
-endfunc
-
-set nu
-
-set fencs=utf-8,ucs-bom,shift-jis,gb18030,gbk,gb2312,cp936
-set termencoding=utf-8
-set encoding=utf-8
-set fileencodings=ucs-bom,utf-8,cp936
-set fileencoding=utf-8
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" 显示相关  
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set shortmess=atI   " 启动的时候不显示那个援助乌干达儿童的提示  
-"winpos 5 5          " 设定窗口位置  
-"set lines=40 columns=155    " 设定窗口大小  
-set go=             " 不要图形按钮  
-"color asmanian2     " 设置背景主题  
-set guifont=Consolas "Courier_New:h10:cANSI   " 设置字体  
-syntax on           " 语法高亮  
-autocmd InsertLeave * se nocul  " 用浅色高亮当前行  
-autocmd InsertEnter * se cul    " 用浅色高亮当前行  
-set ruler           " 显示标尺  
-set showcmd         " 输入的命令显示出来，看的清楚些  
-"set cmdheight=1     " 命令行（在状态行下）的高度，设置为1  
-"set whichwrap+=<,>,h,l   " 允许backspace和光标键跨越行边界(不建议)  
-"set scrolloff=3     " 光标移动到buffer的顶部和底部时保持3行距离  
-set novisualbell    " 不要闪烁(不明白)  
-set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [POS=%l,%v][%p%%]\ %{strftime(\"%d/%m/%y\ -\ %H:%M\")}   "状态行显示的内容  
-set laststatus=1    " 启动显示状态行(1),总是显示状态行(2)  
-"set foldenable      " 允许折叠  
-"set foldmethod=manual   " 手动折叠  
-set background=dark "背景使用黑色 
-set nocompatible  "去掉讨厌的有关vi一致性模式，避免以前版本的一些bug和局限  
-" 显示中文帮助
-if version >= 603
-	set helplang=cn
-	set encoding=utf-8
-endif
-" 设置配色方案
-"字体 
-if (has("gui_running")) 
-   set guifont=Bitstream\ Vera\ Sans\ Mono\ 10 
-endif 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"""""新文件标题
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"新建.c,.h,.sh,.java文件，自动插入文件头 
-autocmd BufNewFile *.cpp,*.[ch],*.sh,*.java,*.py exec ":call SetTitle()" 
-""定义函数SetTitle，自动插入文件头 
-func SetTitle() 
-	"如果文件类型为.sh文件 
-	if &filetype == 'sh' 
-		call setline(1,"\#########################################################################") 
-		call append(line("."), "\# File Name: ".expand("%")) 
-		call append(line(".")+1, "\# Author: cooltime") 
-		call append(line(".")+2, "\# mail: fan.bai@changba.com") 		call append(line(".")+3, "\# Created Time: ".strftime("%c")) 
-		call append(line(".")+4, "\#########################################################################") 
-		call append(line(".")+5, "\#!/bin/bash") 
-		call append(line(".")+6, "") 
-    endif
-    if &filetype == 'cpp'
-		call append(line(".")+6, "#include<iostream>")
-		call append(line(".")+7, "using namespace std;")
-		call append(line(".")+8, "")
-	endif
-	if &filetype == 'c'
-		call append(line(".")+6, "#include<stdio.h>")
-		call append(line(".")+7, "")
-	endif
-    if &filetype == 'py'
-        call append(line("."), "\#!/usr/bin/python")
-        call append(line(".")+1, "\############################################################")
-        call append(line(".")+2, "\# File Name : ".expand("%"))
-        call append(line(".")+3, "\# Author : cooltime")
-        call append(line(".")+4, "\# Mail : fan.bai@changba.com")
-		call append(line(".")+5, "\# Created Time: ".strftime("%c")) 
-		call append(line(".")+5, "\# Description: " 
-        call append(line(".")+7, "\############################################################")
-    endif
-	"	if &filetype == 'java'
-	"		call append(line(".")+6,"public class ".expand("%"))
-	"		call append(line(".")+7,"")
-	"	endif
-	"新建文件后，自动定位到文件末尾
-	autocmd BufNewFile * normal G
-endfunc 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"键盘命令
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-nmap <leader>w :w!<cr>
-nmap <leader>f :find<cr>
-
-" 映射全选+复制 ctrl+a
-map <C-A> ggVGY
-map! <C-A> <Esc>ggVGY
-map <F12> gg=G
-" 选中状态下 Ctrl+c 复制
-vmap <C-c> "+y
-"去空行  
-nnoremap <F2> :g/^\s*$/d<CR> 
-"比较文件  
-nnoremap <C-F2> :vert diffsplit 
-"新建标签  
-map <M-F2> :tabnew<CR>  
-"列出当前目录文件  
-map <F3> :tabnew .<CR>  
-"打开树状文件目录  
-map <C-F3> \be  
-"C，C++ 按F5编译运行
-map <F5> :call CompileRunGcc()<CR>
-func! CompileRunGcc()
-	exec "w"
-	if &filetype == 'c'
-		exec "!g++ % -o %<"
-		exec "! ./%<"
-	elseif &filetype == 'cpp'
-		exec "!g++ % -o %<"
-		exec "! ./%<"
-	elseif &filetype == 'java' 
-		exec "!javac %" 
-		exec "!java %<"
-	elseif &filetype == 'sh'
-		:!./%
-	elseif &filetype == 'py'
-		exec "!python %"
-		exec "!python %<"
-	endif
-endfunc
-"C,C++的调试
-map <F8> :call Rungdb()<CR>
-func! Rungdb()
-	exec "w"
-	exec "!g++ % -g -o %<"
-	exec "!gdb ./%<"
-endfunc
-
-
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-""实用设置
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" 设置当文件被改动时自动载入
-set autoread
-" quickfix模式
-autocmd FileType c,cpp map <buffer> <leader><space> :w<cr>:make<cr>
-"代码补全 
-set completeopt=preview,menu 
-"允许插件  
-filetype plugin on
-"共享剪贴板  
-set clipboard+=unnamed 
-"从不备份  
-set nobackup
-"make 运行
-:set makeprg=g++\ -Wall\ \ %
-"自动保存
-set autowrite
-set ruler                   " 打开状态栏标尺
-set cursorline              " 突出显示当前行
-set magic                   " 设置魔术
-set guioptions-=T           " 隐藏工具栏
-set guioptions-=m           " 隐藏菜单栏
-"set statusline=\ %<%F[%1*%M%*%n%R%H]%=\ %y\ %0(%{&fileformat}\ %{&encoding}\ %c:%l/%L%)\
-" 设置在状态行显示的信息
-""set foldcolumn=0
-""set foldmethod=indent 
-""set foldlevel=3 
-"set foldenable              " 开始折叠
-" 不要使用vi的键盘模式，而是vim自己的
+""""""""""""""""""""""""Vundle"""""""""""""""""""""""
+" set the runtime path to include Vundle and initialize
 set nocompatible
-" 语法高亮
-set syntax=on
-" 去掉输入错误的提示声音
-set noeb
-" 在处理未保存或只读文件的时候，弹出确认
-set confirm
-" 自动缩进
-set autoindent
-set cindent
-" Tab键的宽度
-set tabstop=4
-" 统一缩进为4
-set softtabstop=4
-set shiftwidth=4
-" 不要用空格代替制表符
-set expandtab
-" 在行和段开始处使用制表符
-set smarttab
-" 显示行号
-set number
-" 历史记录数
-set history=1000
-"禁止生成临时文件
+filetype off
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
+
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+
+" The following are examples of different formats supported.
+" Keep Plugin commands between vundle#begin/end.
+" plugin on GitHub repo
+Bundle 'scrooloose/nerdtree'
+Bundle 'vim-airline/vim-airline-themes'
+Bundle 'majutsushi/tagbar'
+Bundle 'bling/vim-airline'
+Bundle 'vim-scripts/winmanager'
+Bundle 'ervandew/supertab'
+Bundle 'rkulla/pydiction'
+Bundle 'fatih/vim-go'
+"Bundle 'scrooloose/syntastic'
+Bundle 'w0rp/ale'
+Bundle 'tpope/vim-surround'
+Bundle 'altercation/vim-colors-solarized'
+Bundle 'tpope/vim-commentary'
+Bundle 'fholgado/minibufexpl.vim'
+Bundle 'dgryski/vim-godef'
+"Bundle 'davidhalter/jedi-vim'
+Bundle 'pangloss/vim-javascript'
+Bundle 'mattn/emmet-vim'
+Bundle 'terryma/vim-multiple-cursors'
+"Bundle 'Valloric/YouCompleteMe'
+Bundle 'Yggdroot/indentLine'
+Bundle 'ternjs/tern_for_vim'
+Bundle 'jelera/vim-javascript-syntax'
+"Bundle 'othree/javascript-libraries-syntax.vim'
+Bundle 'godlygeek/tabular.git'
+Bundle 'walm/jshint.vim.git'
+Bundle 'moll/vim-node.git'
+"Bundle 'myhere/vim-nodejs-complete.git'
+Bundle 'posva/vim-vue'
+"Bundle 'shawncplus/phpcomplete.vim'
+"Bundle 'python-mode/python-mode'
+Bundle 'joonty/vdebug'
+Bundle 'nsf/gocode', {'rtp': 'vim/'}
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+" To ignore plugin indent changes, instead use:
+"filetype plugin on
+"
+" Brief help
+" :PluginList       - lists configured plugins
+" :PluginInstall    - installs plugins; append `!` to update or just
+":PluginUpdate
+" :PluginSearch foo - searches for foo; append `!` to refresh local cache
+" :PluginClean      - confirms removal of unused plugins; append `!` to
+"
+" see :h vundle for more details or wiki for FAQ
+" Put your non-Plugin stuff after this line
+" Uncomment the next line to make Vim more Vi-compatible                                                                                                                            
+"""""""""""""""""""""""End of Vundle""""""""""""""""""""
+
+" NOTE: debian.vim sets 'nocompatible'. Setting 'compatible' changes numerous
+" options, so any other options should be set AFTER setting 'compatible'.
+set nocompatible
+ 
+" Vim5 and later versions support syntax highlighting. Uncommenting the
+" following enables syntax highlighting by default.
+if has("syntax")
+syntax on " 语法高亮
+endif
+colorscheme ron
+ 
+" detect file type
+filetype on
+filetype plugin on
+set nocp
+ 
+" If using a dark background within the editing area and syntax highlighting
+" turn on this option as well
+set background=dark
+ 
+" Uncomment the following to have Vim jump to the last position when
+" reopening a file
+if has("autocmd")
+au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+"have Vim load indentation rules and plugins according to the detected filetype
+filetype plugin indent on
+endif
+ 
+" The following are commented out as they cause vim to behave a lot
+" differently from regular Vi. They are highly recommended though.
+ 
+"set ignorecase " 搜索模式里忽略大小写
+"set smartcase " 如果搜索模式包含大写字符，不使用 'ignorecase' 选项。只有在输入搜索模式并且打开 'ignorecase' 选项时才会使用。
+set autowrite " 自动把内容写回文件: 如果文件被修改过，在每个 :next、:rewind、:last、:first、:previous、:stop、:suspend、:tag、:!、:make、CTRL-] 和 CTRL-^命令时进行；用 :buffer、CTRL-       O、CTRL-I、'{A-Z0-9} 或 `{A-Z0-9} 命令转到别的文件时亦然。
+set autoindent " 设置自动对齐(缩进)：即每行的缩进值与上一行相等；使用 noautoindent 取消设置
+"set smartindent " 智能对齐方式
+set tabstop=4 " 设置制表符(tab键)的宽度
+set softtabstop=4 " 设置软制表符的宽度
+set expandtab "用space替代tab的输入
+set shiftwidth=4 " (自动) 缩进使用的4个空格
+set cindent " 使用 C/C++ 语言的自动缩进方式
+set cinoptions={0,1s,t0,n-2,p2s,(03s,=.5s,>1s,=1s,:1s "设置C/C++语言的具体缩进方式
+set showmatch " 设置匹配模式，显示匹配的括号
+set linebreak " 整词换行
+set whichwrap=b,s,<,>,[,] " 光标从行首和行末时可以跳到另一行去
+"set hidden " Hide buffers when they are abandoned
+"set mouse=a " Enable mouse usage (all modes) "使用鼠标
+set number " Enable line number "显示行号
+"set previewwindow " 标识预览窗口
+set history=50 " set command history to 50 "历史记录50条
+ 
+ 
+"--状态行设置--
+set laststatus=2 " 总显示最后一个窗口的状态行；设为1则窗口数多于一个的时候显示最后一个窗口的状态行；0不显示最后一个窗口的状态行
+set ruler " 标尺，用于显示光标位置的行号和列号，逗号分隔。每个窗口都有自己的标尺。如果窗口有状态行，标尺在那里显示。否则，它显示在屏幕的最后一行上。
+ 
+"--命令行设置--
+set showcmd " 命令行显示输入的命令
+set showmode " 命令行显示vim当前模式
+ 
+"--find setting--
+set incsearch " 输入字符串就显示匹配点
+set hlsearch
+ 
+ 
+"------------------------------------------------------added by cooltime---------------------------------------
 set nobackup
 set noswapfile
-"搜索忽略大小写
-set ignorecase
-"搜索逐字符高亮
-set hlsearch
-set incsearch
-"行内替换
-set gdefault
-"编码设置
-set enc=utf-8
-set fencs=utf-8,ucs-bom,shift-jis,gb18030,gbk,gb2312,cp936
-"语言设置
-set langmenu=zh_CN.UTF-8
-set helplang=cn
-" 我的状态行显示的内容（包括文件类型和解码）
-"set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [POS=%l,%v][%p%%]\ %{strftime(\"%d/%m/%y\ -\ %H:%M\")}
-"set statusline=[%F]%y%r%m%*%=[Line:%l/%L,Column:%c][%p%%]
-" 总是显示状态行
-set laststatus=2
-" 命令行（在状态行下）的高度，默认为1，这里是2
-set cmdheight=2
-" 侦测文件类型
-filetype on
-" 载入文件类型插件
-filetype plugin on
-" 为特定文件类型载入相关缩进文件
-filetype indent on
-" 保存全局变量
-set viminfo+=!
-" 带有如下符号的单词不要被换行分割
-set iskeyword+=_,$,@,%,#,-
-" 字符间插入的像素行数目
-set linespace=0
-" 增强模式中的命令行自动完成操作
-set wildmenu
-" 使回格键（backspace）正常处理indent, eol, start等
-set backspace=2
-" 允许backspace和光标键跨越行边界
-set whichwrap+=<,>,h,l
-" 可以在buffer的任何地方使用鼠标（类似office中在工作区双击鼠标定位）
-set mouse=a
-set selection=exclusive
-set selectmode=mouse,key
-" 通过使用: commands命令，告诉我们文件的哪一行被改变过
-set report=0
-" 在被分割的窗口间显示空白，便于阅读
-set fillchars=vert:\ ,stl:\ ,stlnc:\
-" 高亮显示匹配的括号
-set showmatch
-" 匹配括号高亮的时间（单位是十分之一秒）
-set matchtime=1
-" 光标移动到buffer的顶部和底部时保持3行距离
-set scrolloff=3
-" 为C程序提供自动缩进
-set smartindent
-" 高亮显示普通txt文件（需要txt.vim脚本）
-au BufRead,BufNewFile *  setfiletype txt
-"自动补全
-:inoremap ( ()<ESC>i
-:inoremap ) <c-r>=ClosePair(')')<CR>
-":inoremap { {<CR>}<ESC>O
-":inoremap } <c-r>=ClosePair('}')<CR>
-:inoremap [ []<ESC>i
-:inoremap ] <c-r>=ClosePair(']')<CR>
-":inoremap " ""<ESC>i
-":inoremap ' ''<ESC>i
-function! ClosePair(char)
-	if getline('.')[col('.') - 1] == a:char
-		return "\<Right>"
-	else
-		return a:char
-	endif
-endfunction
-filetype plugin indent on 
-"打开文件类型检测, 加了这句才可以用智能补全
-set completeopt=longest,menu
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-
-
-
-"NERDtee设定
-let NERDChristmasTree=1
-let NERDTreeAutoCenter=1
-let NERDTreeBookmarksFile=$VIM.'\Data\NerdBookmarks.txt'
-let NERDTreeMouseMode=2
-let NERDTreeShowBookmarks=1
-let NERDTreeShowFiles=1
-let NERDTreeShowHidden=1
-let NERDTreeShowLineNumbers=1
-let NERDTreeWinPos='left'
-let NERDTreeWinSize=25
-nnoremap f :NERDTreeToggle
-map <F7> :NERDTree<CR>  
-
-nmap wm : WMToggle<CR>
-nmap ctags : !ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR> 
-
-filetype plugin on
-source /root/.vim/plugin/php-doc.vim
+ 
+set ignorecase "搜索时忽略大小写
+"set textwidth=80
+au WinLeave * set nocursorline nocursorcolumn
+au WinEnter * set cursorline cursorcolumn
+set cursorline cursorcolumn
+"set matchpairs+=<:>
+"set hlsearch
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.png,*.jpg,*.jpeg,*.gif 
+let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+ 
+filetype plugin indent on
+autocmd BufRead,BufNewFile *.md set filetype=markdown
+autocmd BufRead,BufNewFile *.json set filetype=json
+ 
+source ~/.vim/php-doc.vim
 inoremap <C-P> <ESC>:call PhpDocSingle()<CR>i
 nnoremap <C-P> :call PhpDocSingle()<CR>
 vnoremap <C-P> :call PhpDocRange()<CR>
-autocmd FileType php set omnifunc=phpcomplete#CompletePHP
-let g:SuperTabDefaultCompletionType="context"
-let g:miniBufExplMapWindowNavVim = 1 
-let g:miniBufExplMapWindowNavArrows = 1 
-let g:miniBufExplMapCTabSwitchBufs = 1   
-let g:miniBufExplModSelTarget = 1   
-let g:miniBufExplMoreThanOne=0 
-let g:NERDTree_title="[NERDTree]" 
-let g:winManagerWindowLayout="NERDTree|TagList"                                                                                                                                              
-let g:AutoOpenWinManager = 1 
-function! NERDTree_Start()  
-    exec 'NERDTree'
+inoremap <C-O> : <A-/>
+ 
+set tags=tags
+set tags+=./tags "add current directory's generated tags file
+set tags+=~/arm/linux-2.6.24.7/tags "add new tags file
+ 
+"let Tlist_Show_One_File=1
+"let Tlist_Exit_OnlyWindow=1
+ 
+let g:tagbar_width=35
+let g:tabar_autofocus=1
+nmap tt :TagbarToggle<CR>
+ 
+let g:miniBufExplMapWindowNavVim = 1
+let g:miniBufExplMapWindowNavArrows = 1
+let g:miniBufExplMapCTabSwitchBufs = 1
+let g:miniBufExplModSelTarget = 1
+let g:miniBufExplMoreThanOne=0
+ 
+"WinManager和NERDTree的配置
+let g:NERDTree_title="[NERDTree]"
+let g:winManagerWindowLayout="NERDTree"
+let g:winManagerWidth = 30
+let g:NERDTreeHeight = 50
+let g:AutoOpenWinManager = 1
+  
+function! NERDTree_Start()
+    exec 'NERDTree'  
 endfunction
+  
+function! NERDTree_IsValid()
+    return 1
+endfunction
+"
+"WindowManager快捷键
+nmap wm :WMToggle<CR>
+ 
+"横向光标对齐线设置
+set cursorline
+hi CursorLine term=underline
+hi CursorColumn term=underline
+"hi CursorColumn cterm=NONE ctermbg=lightgray ctermfg=darkred
+ 
+""自动补全
+:inoremap ( ()<ESC>i
+:inoremap ) <c-r>=ClosePair(')')<CR>
+:inoremap { {<CR>}<ESC>O
+:inoremap } <c-r>=ClosePair('}')<CR>
+:inoremap [ []<ESC>i
+:inoremap ] <c-r>=ClosePair(']')<CR>
+"":inoremap " ""<ESC>i
+"":inoremap ' ''<ESC>i
+function! ClosePair(char)
+    if getline('.')[col('.') - 1] == a:char
+        return "\<Right>"
+    else
+        return a:char
+    endif
+endfunction
+ 
+"纵向indent对齐线的设置，暂时不启用
+let g:indent_guides_enable_on_vim_startup = 1
+hi IndentGuidesOdd  ctermbg=lightgreen
+hi IndentGuidesEven ctermbg=darkgray
+ 
+"折叠相关设置
+set fdm=indent
+set foldlevel=2
+"
+ 
+set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+ 
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 1
+let g:syntastic_javascript_checkers = []
+"let g:syntastic_python_checkers = ["python"]
+let g:syntastic_python_checkers = ["flake8"]
+let g:syntastic_php_checkers = ["php"]
+"let g:syntastic_php_checkers = ["phpcs"]
+let g:syntastic_go_checkers = ["golint","gofmt"]
+let g:syntastic_json_checkers = ["jsonlint"]
+let g:syntastic_sh_checkers = ["bashate"]
+ 
+let g:syntastic_check_on_open=1
+let g:syntastic_phpcs_conf = '--tab-width=4 --standard=CodeIgniter'  
 
-function! NERDTree_IsValid() 
-    return 1   
-endfunction''""""""
+let g:airline#extensions#tabline#enabled = 1
+
+"let g:SuperTabDefaultCompletionType="<C-X><C-O>"
+
+let g:airline_theme="luna"
+let g:airline_powerlint_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#buffer_nr_show = 1
+"nnoremap <C-N> :bn<CR>
+"nnoremap <C-P> :bp<CR>
+let g:airline#extensions#whitespace#enabled = 0
+let g:airline#extensions#whitespace#symbol = '!'
+
+
+autocmd! BufNewFile *.py,*.sh exec ":call SetTitle()"
+
+func SetTitle()
+    if &filetype == 'python'
+        call setline(1, "\#!/usr/bin/python")
+        call setline(2, "\# -*- coding:utf-8 -*-")
+        call setline(3, "\# Author : cooltime")
+        call setline(4, "")
+        call setline(5, "\# File name : ".expand("%"))
+        call setline(6, "\# Description :")
+        call setline(7, "")
+        call setline(8, "")
+        call setline(9, "from __future__ import absolute_import, unicode_literals  # NOQA")
+        call setline(10, "")
+        call setline(11, "")
+        call setline(12, "if __name__ == '__main__':")
+        call setline(13, "    pass")
+    endif
+endfunc
+
+let g:vdebug_options = {"port": 9010, "timeout": 600}
+
+""python-mode
+"""开启警告
+"let g:pymode_warnings = 0
+""保存文件时自动删除无用空格
+""let g:pymode_trim_whitespaces = 1
+""let g:pymode_options = 1
+"""显示允许的最大长度的列
+"let g:pymode_options_colorcolumn = 1
+""设置QuickFix窗口的最大，最小高度
+""let g:pymode_quickfix_minheight = 3
+""let g:pymode_quickfix_maxheight = 10
+"""使用python3
+"let g:pymode_python = 'python3'
+""使用PEP8风格的缩进
+""let g:pymode_indent = 1
+"""取消代码折叠
+"let g:pymode_folding = 0
+""开启python-mode定义的移动方式
+""let g:pymode_motion = 1
+"""启用python-mode内置的python文档，使用K进行查找
+"let g:pymode_doc = 1
+"let g:pymode_doc_bind = 'K'
+""自动检测并启用virtualenv
+""let g:pymode_virtualenv = 1
+"""不使用python-mode运行python代码
+"let g:pymode_run = 0
+""let g:pymode_run_bind = '<Leader>r'
+"""不使用python-mode设置断点
+"let g:pymode_breakpoint = 0
+""let g:pymode_breakpoint_bind = '<leader>b'
+"""启用python语法检查
+"let g:pymode_lint = 1
+""修改后保存时进行检查
+""let g:pymode_lint_on_write = 0
+"""编辑时进行检查
+"let g:pymode_lint_on_fly = 0
+"let g:pymode_lint_checkers = ['pyflakes', 'pep8']
+""发现错误时不自动打开QuickFix窗口
+""let g:pymode_lint_cwindow = 0
+"""侧边栏不显示python-mode相关的标志
+"let g:pymode_lint_signs = 0
+""let g:pymode_lint_todo_symbol = 'WW'
+"""let g:pymode_lint_comment_symbol = 'CC'
+""let g:pymode_lint_visual_symbol = 'RR'
+"""let g:pymode_lint_error_symbol = 'EE'
+""let g:pymode_lint_info_symbol = 'II'
+"""let g:pymode_lint_pyflakes_symbol = 'FF'
+""启用重构
+""let g:pymode_rope = 1
+"""不在父目录下查找.ropeproject，能提升响应速度
+"let g:pymode_rope_lookup_project = 0
+""光标下单词查阅文档
+""let g:pymode_rope_show_doc_bind = '<C-c>d'
+"""项目修改后重新生成缓存
+"let g:pymode_rope_regenerate_on_write = 1
+""开启补全，并设置<C-Tab>为默认快捷键
+""let g:pymode_rope_completion = 1
+""let g:pymode_rope_complete_on_dot = 1
+""let g:pymode_rope_completion_bind = '<C-Tab>'
+"""<C-c>g跳转到定义处，同时新建竖直窗口打开
+"let g:pymode_rope_goto_definition_bind = '<C-c>g'
+"let g:pymode_rope_goto_definition_cmd = 'vnew'
+""重命名光标下的函数，方法，变量及类名
+""let g:pymode_rope_rename_bind = '<C-c>rr'
+"""重命名光标下的模块或包
+"let g:pymode_rope_rename_module_bind = '<C-c>r1r'
+""开启python所有的语法高亮
+""let g:pymode_syntax = 1
+
+" For ALE
+let g:ale_completion_enabled = 1
+
+
+autocmd bufwritepost .vimrc source %
+set pastetoggle=<F2>
+set backspace=2 " 设置退格键可用
+"set mouse=a
+let g:pydiction_location = '/home/cooltime/.vim/bundle/pydiction/complete-dict'

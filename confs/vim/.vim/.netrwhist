@@ -1,9 +1,0 @@
-let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =7
-let g:netrw_dirhist_1='/home/cooltime/workspace/php/logger/application'
-let g:netrw_dirhist_2='/root/.vim'
-let g:netrw_dirhist_3='/home/wwwroot/ktvserver/crontab/user_classification'
-let g:netrw_dirhist_4='/home/cooltime/workspace/python/dashboard/rrd/static/img'
-let g:netrw_dirhist_5='/home/cooltime/workspace/python/dashboard/rrd/templates'
-let g:netrw_dirhist_6='/home/wwwroot/ktvserver/admin/operation/thinkphp/bin'
-let g:netrw_dirhist_7='/root/test'
